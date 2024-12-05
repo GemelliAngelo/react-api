@@ -12,16 +12,12 @@ function App() {
   const [posts, setPosts] = useState([]);
   const [formData, setFormData] = useState(defaultFormData);
 
-  const fetchPosts = () => {
+  useEffect(() => {
     fetch("http://127.0.0.1:3000/posts")
       .then((res) => res.json())
       .then((data) => {
-        setPosts(() => [...data]);
+        setPosts(data);
       });
-  };
-
-  useEffect(() => {
-    fetchPosts();
   }, []);
 
   const handleFormData = (e) => {
@@ -45,12 +41,18 @@ function App() {
     )
       return alert("Riempi tutti i campi");
 
+    fetch("http://127.0.0.1:3000/posts");
+
     setPosts((posts) => [...posts, { ...formData }]);
     setFormData(defaultFormData);
   };
 
   const handleDelete = (id) => {
-    setPosts([...posts.filter((post) => post.id !== id)]);
+    fetch("http://127.0.0.1:3000/posts/" + id, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((data) => setPosts(data));
   };
 
   return (
@@ -112,8 +114,8 @@ function App() {
             <button className="form-button">AGGIUNGI</button>
           </form>
           <div className="card-wrapper">
-            {posts.map((post) => (
-              <div className="card" key={post.id}>
+            {posts.map((post, index) => (
+              <div className="card" key={index}>
                 <div className="card-header">
                   <img className="card-image" src={post.image} />
                   <i
