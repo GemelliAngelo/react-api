@@ -41,8 +41,6 @@ function App() {
     )
       return alert("Riempi tutti i campi");
 
-    fetch("http://127.0.0.1:3000/posts");
-
     setPosts((posts) => [...posts, { ...formData }]);
     setFormData(defaultFormData);
   };
