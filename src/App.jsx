@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const defaultFormData = {
   title: "",
-  image:
-    "https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg",
+  image: "",
   content: "",
   categories: ["HTML", "CSS", "JS", "Php", "Express", "NODE", "React.js"],
   published: false,
@@ -12,6 +11,18 @@ const defaultFormData = {
 function App() {
   const [posts, setPosts] = useState([]);
   const [formData, setFormData] = useState(defaultFormData);
+
+  const fetchPosts = () => {
+    fetch("http://127.0.0.1:3000/posts")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
 
   const handleFormData = (e) => {
     const newValue =
@@ -34,7 +45,7 @@ function App() {
     )
       return alert("Riempi tutti i campi");
 
-    setPosts((posts) => [...posts, { id: Date.now(), ...formData }]);
+    setPosts((posts) => [...posts, { ...formData }]);
     setFormData(defaultFormData);
   };
 
